@@ -21,19 +21,21 @@ void init(bathroom b){
 }
 
 void enter(gender g, bathroom b){
-	while()
+	pthread_spin_lock(b.lock);
 	b.currentPeopleCount--;
 	b.currentTime++;
 	if(b.currentPeopleCount == 1){
 		b.state = g;
 	}
+	pthread_spin_unlock(b.lock);
 }
 void leave(bathroom b){
+	pthread_spin_lock(b.lock);
 	b.currentPeopleCount--;
 	b.currentTime++;
 
 	if(b.currentPeopleCount == 0){
 		b.state = Empty;
 	}
+	pthread_spin_unlock(b.lock);
 }
-
