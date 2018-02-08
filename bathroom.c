@@ -7,13 +7,11 @@
 
 #include "bathroom.h"
 
-//this is the comment that indicates a change
-
 void enter(gender g, bathroom b){
-	if(g == b.state || b.state == Empty){
-
-	}
+	while(g == b.state || b.state == Empty){} //spinLock
+	//test_and_set();
 }
-void leave(void){
-
+void leave(bathroom b){
+	b.currentPeopleCount--;
+	b.currentTime++;
 }
