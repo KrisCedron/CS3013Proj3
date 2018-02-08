@@ -8,8 +8,10 @@
 #include "bathroom.h"
 
 void enter(gender g, bathroom b){
-	while(g == b.state || b.state == Empty){} //spinLock
-	//test_and_set();
+	//test_and_set() spinLock
+	b.currentPeopleCount--;
+	b.currentTime++;
+
 }
 void leave(bathroom b){
 	b.currentPeopleCount--;
