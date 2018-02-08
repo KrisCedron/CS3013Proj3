@@ -6,14 +6,34 @@
  */
 
 #include "bathroom.h"
+#include <pthread.h>
+#include <stdio.h>
+
+void init(bathroom b){
+	b.currentPeopleCount = 0;
+	b.currentTime = 0;
+	b.state = Empty;
+	b.totalPeopleCount = 0;
+	if(pthread_spin_init(b.lock, PTHREAD_PROCESS_SHARED)){
+		printf("Bathroom Lock Creation Failed, Exiting Now");
+		exit(-1);
+	}
+}
 
 void enter(gender g, bathroom b){
-	//test_and_set() spinLock
+	while()
 	b.currentPeopleCount--;
 	b.currentTime++;
-
+	if(b.currentPeopleCount == 1){
+		b.state = g;
+	}
 }
 void leave(bathroom b){
 	b.currentPeopleCount--;
 	b.currentTime++;
+
+	if(b.currentPeopleCount == 0){
+		b.state = Empty;
+	}
 }
+
