@@ -7,6 +7,8 @@
 
 #include "bathroom.h"
 
+//this is the comment that indicates a change
+
 void enter(gender g, bathroom b){
 	if(g == b.state || b.state == Empty){
 
