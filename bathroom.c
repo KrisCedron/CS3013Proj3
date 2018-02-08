@@ -8,9 +8,8 @@
 #include "bathroom.h"
 
 void enter(gender g, bathroom b){
-	if(g == b.state || b.state == Empty){
+	while(g != b.state || b.state != Empty){}//spinLock
 
-	}
 }
 void leave(void){
 
