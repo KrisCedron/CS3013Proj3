@@ -26,6 +26,7 @@ void enter(gender g, bathroom b){
 	b.currentTime++;
 	if(b.currentPeopleCount == 1){
 		b.state = g;
+	}
 	pthread_spin_unlock(b.lock);
 }
 void leave(bathroom b){
