@@ -6,8 +6,7 @@
  */
 
 #include "bathroom.h"
-#include <pthread.h>
-#include <stdio.h>
+
 
 void init(bathroom b){
 	b.currentPeopleCount = 0;

@@ -5,8 +5,11 @@
  *      Author: ccedron
  */
 
+
 #ifndef BATHROOM_H_
 #define BATHROOM_H_
+#include <pthread.h>
+#include <stdio.h>
 typedef enum gender{Empty, Female, Male}gender;
 typedef struct bathroom{
 	pthread_spinlock_t *lock;
