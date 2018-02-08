@@ -1,5 +1,7 @@
-bathroom: bathroom.c bathroom.h
-	gcc -Wall -g bathroom.c -o bathroom
+all: master
+
+bathroom.o: bathroom.c bathroom.h
+	gcc -c -g bathroom.c -pthread
 	
-master: master.c
-	gcc -Wall -g master.c -o bathroom
+master: master.c bathroom.o
+	gcc -Wall -g  master.c bathroom.o -pthread -lm -o main

@@ -8,5 +8,5 @@
 #include <math.h>
 
 int getNormDistNum(double mean, double stdDev){
-	return sqrt(-2 * log(a)) * cos(2 *M_PI*rand());
+	return sqrt(-2 * log(rand())) * cos(2 *M_PI*rand());
 }

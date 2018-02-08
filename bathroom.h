@@ -10,9 +10,11 @@
 #define BATHROOM_H_
 #include <pthread.h>
 #include <stdio.h>
+#include <stdlib.h>
+
 typedef enum gender{Empty, Female, Male}gender;
 typedef struct bathroom{
-	pthread_spinlock_t *lock;
+	pthread_spinlock_t lock;
 	gender state;
 	int currentPeopleCount;
 	int totalPeopleCount;
@@ -20,5 +22,7 @@ typedef struct bathroom{
 }bathroom;
 
 void enter(gender g, bathroom b);
-void leave(void);
+void leave(bathroom b);
+void init(bathroom b);
+
 #endif /* BATHROOM_H_ */
