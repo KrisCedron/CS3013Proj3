@@ -54,7 +54,7 @@ void *thread(){
 		if(loopCounter == loopCount){
 			printf("Hey my name is Jimmy and I don't need to go to the bathroom anymore!");
 		}//if
-		b.currentTime++;
+		b.currentTime = clock() - b.startingTime;
 	}//while
 	return NULL;
 }//thread()

@@ -11,6 +11,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 typedef enum gender{Empty, Female, Male}gender;
 typedef struct bathroom{
@@ -18,7 +19,8 @@ typedef struct bathroom{
 	gender state;
 	int currentPeopleCount;
 	int totalPeopleCount;
-	int currentTime;
+	double startingTime;
+	double currentTime;
 }bathroom;
 
 void enter(gender g, bathroom b);
