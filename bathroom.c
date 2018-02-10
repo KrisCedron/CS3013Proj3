@@ -40,5 +40,4 @@ void leave(bathroom b){
 	if(b.currentPeopleCount == 0){
 		b.state = Empty;
 	}
-	pthread_spin_unlock(&b.lock);
 }
