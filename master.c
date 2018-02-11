@@ -15,47 +15,50 @@
 #include "bathroom.h"
 
 bathroom b;
-
+enum state{NotPeeing, Peeing};
 
 void *thread(){
 	int gender = Male;
-	double meanArrival = .25; //the mean arrival time
+	double meanArrival = 5; //the mean arrival time
 	double stddevArrival = meanArrival/2;
-	double meanStay = .50; //the average time that people stay
+	double meanStay = 10; //the average time that people stay
 	double stddevStay = meanStay/2;
-	int loopCount = 300;//the number of times the person is meant to go to the bathroom
-	int loopCounter = 1;
-//	int currentStatus = 0;//indicates whether they are or are not in the bathroom
+	int loopCount = 50;//the number of times the person is meant to go to the bathroom
+	int currState = NotPeeing;
 	//HERE IS ALSO WHERE THE PARAMETERS ARE TO BE ADDED FOR STATISICS
+	double waitAvg = 0;
+	double waitMin = 10000000000;
+	double waitMax = 0;
+	double bathAvg = 0;
+	double bathMin = 10000000000;
+	double bathMax = 0;
 
-	double arrivalTime = (sqrt(-2 * log(meanArrival)) * abs((int)cos(2 * 3.14 * stddevArrival))) + b.currentTime;
+	double arrivalTime = ((sqrt(-2 * log(drand48())) * cos(2 * 3.14 * drand48())) * stddevArrival) + meanArrival + b.currentTime;
 	double bathroomTime;
 	init(b);
 	printf("%d\n", pthread_spin_unlock(&b.lock));
-
+	printf("First Pee Time: %f\n",arrivalTime);
 	while(b.currentTime <= loopCount){
-		if(arrivalTime <= b.currentTime){
+		if(currState == NotPeeing && arrivalTime <= b.currentTime){
 			printf("Hey my name is Jimmy and I have to go to the bathroom!!\n");
 			enter(gender, b);
+			currState = Peeing;
 			printf("Hey my name is Jimmy and I'm in the bathroom!\n");
-			printf("Bathroom Time: %f\n", bathroomTime = (sqrt(-2 * log(meanStay)) * abs((int)cos(2 * 3.14 * stddevStay))) + b.currentTime);
+			bathroomTime = ((sqrt(-2 * log(drand48())) * cos(2 * 3.14 * drand48())) * stddevStay) + meanStay  + b.currentTime;
+			printf("My name be Jimmy and I'm gonna pee until %f\n", bathroomTime);
 		}//if
-		else if(bathroomTime <= b.currentTime){
+		else if(currState == Peeing && bathroomTime <= b.currentTime){
 			printf("Hey my name is Jimmy, and I'm done using the bathroom!\n");
 			leave(b);
-			printf("Hey my name is Jimmy and I just left the bathroom after using it for the %d time!\n", loopCounter);
-			arrivalTime = (sqrt(-2 * log(meanArrival)) * abs((int)cos(2 * 3.14 * stddevArrival))) + b.currentTime;
+			currState = NotPeeing;
+			arrivalTime = ((sqrt(-2 * log(drand48())) * cos(2 * 3.14 * drand48())) * stddevArrival) + meanArrival + b.currentTime;
 			printf("My name be Jimmy and I'm gonna need to pee again at %f\n", arrivalTime);
-			loopCounter = 1;
 		}//else if
 		else{
-			printf("\"I dont need to pee\"\n-Jimmy\n");
+			printf("Im Jimmy And I dont Need to Pee\n");
 		}
-		if(loopCounter == loopCount){
-			printf("Hey my name is Jimmy and I don't need to go to the bathroom anymore!");
-		}//if
-		b.currentTime = clock() - b.startingTime;
 	}//while
+	printf("Hey my name is Jimmy and I don't need to go to the bathroom anymore!");
 	return NULL;
 }//thread()
 
