@@ -69,6 +69,7 @@ void *thread(void *voidIn){
 		else{
 			printf("Im %s And I dont Need to Pee\n", name);
 		}
+
 	}//while
 	printf("Hey my name is %s and I don't need to go to the bathroom anymore!", name);
 	return NULL;

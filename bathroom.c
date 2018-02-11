@@ -23,6 +23,7 @@ void init(bathroom b){
 }
 
 void enter(gender g, bathroom b){
+	while(b.state != g && b.state != Empty){pthread_yield();}
 	printf("Please may i have a lock\n");
 	pthread_spin_lock(&b.lock);
 	printf("yes you may\n");
