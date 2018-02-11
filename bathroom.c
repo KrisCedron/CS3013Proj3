@@ -10,7 +10,8 @@
 
 void init(bathroom b){
 	b.currentPeopleCount = 0;
-	b.currentTime = 0;
+	b.startingTime = clock();
+	b.currentTime;
 	b.state = Empty;
 	b.totalPeopleCount = 0;
 	printf("I am making the spinLock\n");

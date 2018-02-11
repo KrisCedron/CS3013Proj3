@@ -36,8 +36,13 @@ void *thread(void *voidIn){
 	int currState = NotPeeing;
 	char* name = structIn->name;
 
-//	int currentStatus = 0;//indicates whether they are or are not in the bathroom
 	//HERE IS ALSO WHERE THE PARAMETERS ARE TO BE ADDED FOR STATISICS
+	double waitAvg = 0;
+	double waitMin = 10000000000;
+	double waitMax = 0;
+	double bathAvg = 0;
+	double bathMin = 10000000000;
+	double bathMax = 0;
 
 	double arrivalTime = ((sqrt(-2 * log(drand48())) * cos(2 * 3.14 * drand48())) * stddevArrival) + meanArrival + b.currentTime;
 	double bathroomTime;
@@ -64,8 +69,6 @@ void *thread(void *voidIn){
 		else{
 			printf("Im %s And I dont Need to Pee\n", name);
 		}
-		printf("Current Time Is: %d\n---------------------------------\n", b.currentTime);
-		b.currentTime++;
 	}//while
 	printf("Hey my name is %s and I don't need to go to the bathroom anymore!", name);
 	return NULL;
