@@ -21,7 +21,7 @@ typedef struct inputStruct{
 	double arrivalIn;
 	double stayIn;
 	int loopsIn;
-	char* name;
+	int threadNumber;
 }inputStruct;
 
 
@@ -33,8 +33,8 @@ void *thread(void *voidIn){
 	double meanStay = structIn->stayIn; //the average time that people stay
 	double stddevStay = meanStay/2;
 	int loopCount = structIn->loopsIn;//the number of times the person is meant to go to the bathroom
+	int number = structIn->threadNumber;
 	int currState = NotPeeing;
-	char* name = structIn->name;
 
 	//HERE IS ALSO WHERE THE PARAMETERS ARE TO BE ADDED FOR STATISICS
 	double waitAvg = 0;
@@ -47,61 +47,61 @@ void *thread(void *voidIn){
 	double arrivalTime = ((sqrt(-2 * log(drand48())) * cos(2 * 3.14 * drand48())) * stddevArrival) + meanArrival + b.currentTime;
 	double bathroomTime;
 	init(b);
-	printf("%d\n", pthread_spin_unlock(&b.lock));
+
 	printf("First Pee Time: %f\n",arrivalTime);
 	while(loopCount > 0){
 		if(currState == NotPeeing && arrivalTime <= b.currentTime){
-			printf("Hey my name is %s and I have to go to the bathroom!!\n", name);
+			printf("Hey my name is %d and I have to go to the bathroom!!\n", number);
 			enter(gender, b);
 			currState = Peeing;
-			printf("Hey my name is %s and I'm in the bathroom!\n", name);
+			printf("Hey my name is %d and I'm in the bathroom!\n", number);
 			bathroomTime = ((sqrt(-2 * log(drand48())) * cos(2 * 3.14 * drand48())) * stddevStay) + meanStay  + b.currentTime;
-			printf("My name be %s and I'm gonna pee until %f\n", name, bathroomTime);
+			printf("My name be %d and I'm gonna pee until %f\n", number, bathroomTime);
 		}//if
 		else if(currState == Peeing && bathroomTime <= b.currentTime){
-			printf("Hey my name is %s, and I'm done using the bathroom!\n", name);
+			printf("Hey my name is %d, and I'm done using the bathroom!\n", number);
 			leave(b);
 			currState = NotPeeing;
 			arrivalTime = ((sqrt(-2 * log(drand48())) * cos(2 * 3.14 * drand48())) * stddevArrival) + meanArrival + b.currentTime;
-			printf("My name be %s and I'm gonna need to pee again at %f\n", name, arrivalTime);
+			printf("My name be %d and I'm gonna need to pee again at %f\n", number, arrivalTime);
 			loopCount--;
 		}//else if
 		else{
-			printf("Im %s And I dont Need to Pee\n", name);
+			printf("Im %d And I dont Need to Pee\n", number);
 		}
-
+		printf("%f\n", b.currentTime);
 	}//while
-	printf("Hey my name is %s and I don't need to go to the bathroom anymore!", name);
+	printf("Hey my name is %d and I don't need to go to the bathroom anymore!", number);
 	return NULL;
 }//thread()
 
 
+void makeNewThread(int gender, double meanArrival, double meanStay, int loopCount, int number, pthread_t* threadID){
+	inputStruct* newThreadVals = (inputStruct*)malloc(sizeof(inputStruct));
 
+	newThreadVals->genIn = gender;
+	newThreadVals->arrivalIn = meanArrival;
+	newThreadVals->stayIn = meanStay;
+	newThreadVals->loopsIn = loopCount;
+	newThreadVals->threadNumber = number;
+
+	pthread_create(threadID, NULL, thread, newThreadVals);
+	free(newThreadVals);
+}
 
 int main(void){
-	int threadCount = 2;
-	//create 1 pthread for the example
-	pthread_t jimmy;
-	pthread_t joanne;
+	int threadCount = 25;
+	pthread_t* threadIDs = (pthread_t*)calloc(sizeof(pthread_t), threadCount);
 
-	inputStruct* threadInfo = calloc(threadCount, sizeof(inputStruct));
-	threadInfo[0].arrivalIn = 10;
-	threadInfo[0].genIn = Male;
-	threadInfo[0].loopsIn = 10000;
-	threadInfo[0].stayIn = 5;
-	threadInfo[0].name = "Jimmy";
+	double meanArrival = 10;
+	double meanStay = 5;
 
-	threadInfo[1].arrivalIn = 20;
-	threadInfo[1].genIn = Female;
-	threadInfo[1].loopsIn = 10000;
-	threadInfo[1].stayIn = 10;
-	threadInfo[1].name = "Joanne";
+	for(int i = 0; i < threadCount; i++){
+		makeNewThread((i%2)+1, meanArrival, meanStay, 1000, i , &threadIDs[i]);
+	}
 
-	pthread_create(&jimmy, NULL, thread, &threadInfo[0]);
-	pthread_create(&joanne, NULL, thread, &threadInfo[1]);
-
-	pthread_join(jimmy, NULL);
-	pthread_join(joanne, NULL);
+	pthread_join(threadIDs[1], NULL);
+	pthread_join(threadIDs[0], NULL);
 
 	return 0;
 }//main

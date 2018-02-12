@@ -11,7 +11,7 @@
 void init(bathroom b){
 	b.currentPeopleCount = 0;
 	b.startingTime = clock();
-	b.currentTime;
+	b.currentTime = b.startingTime;
 	b.state = Empty;
 	b.totalPeopleCount = 0;
 	printf("I am making the spinLock\n");
@@ -19,6 +19,7 @@ void init(bathroom b){
 		printf("Bathroom Lock Creation Failed, Exiting Now");
 		exit(-1);
 	}
+	pthread_spin_unlock(&b.lock);
 	printf("I made the spin Lock\n");
 }
 
