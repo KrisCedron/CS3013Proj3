@@ -12,6 +12,7 @@
 #include <math.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <time.h>
 #include "bathroom.h"
 
 bathroom b;
@@ -24,14 +25,21 @@ void *thread(){
 	double meanStay = 10; //the average time that people stay
 	double stddevStay = meanStay/2;
 	int loopCount = 50;//the number of times the person is meant to go to the bathroom
+	int averageCounter = loopCount;
 	int currState = NotPeeing;
 	//HERE IS ALSO WHERE THE PARAMETERS ARE TO BE ADDED FOR STATISICS
 	double waitAvg = 0;
-	double waitMin = 10000000000;
+	double waitMin = -1;
 	double waitMax = 0;
 	double bathAvg = 0;
-	double bathMin = 10000000000;
+	double bathMin = -1;
 	double bathMax = 0;
+	//we need the actual clock to get the time itself
+	clock_t waitStartTime;
+	clock_t waitFinTime;
+	clock_t bathStartTime;
+	clock_t bathFinTime;
+	double opTime;
 
 	double arrivalTime = ((sqrt(-2 * log(drand48())) * cos(2 * 3.14 * drand48())) * stddevArrival) + meanArrival + b.currentTime;
 	double bathroomTime;
@@ -41,6 +49,7 @@ void *thread(){
 	while(b.currentTime <= loopCount){
 		if(currState == NotPeeing && arrivalTime <= b.currentTime){
 			printf("Hey my name is Jimmy and I have to go to the bathroom!!\n");
+			waitStartTime = clock();
 			enter(gender, b);
 			currState = Peeing;
 			printf("Hey my name is Jimmy and I'm in the bathroom!\n");
@@ -57,6 +66,7 @@ void *thread(){
 		else{
 			printf("Im Jimmy And I dont Need to Pee\n");
 		}
+		b.currentTime = (double)(clock() - b.startingTime);
 	}//while
 	printf("Hey my name is Jimmy and I don't need to go to the bathroom anymore!");
 	return NULL;

@@ -19,7 +19,7 @@ typedef struct bathroom{
 	gender state;
 	int currentPeopleCount;
 	int totalPeopleCount;
-	double startingTime;
+	clock_t startingTime;
 	double currentTime;
 }bathroom;
 
