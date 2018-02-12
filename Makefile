@@ -8,4 +8,4 @@ master: master.c bathroom.o
 	
 clean: 
 	rm -f bathroom.o
-	rm -f a.out
+	rm -f main
