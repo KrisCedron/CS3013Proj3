@@ -11,7 +11,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <sys/time.h>
 
 typedef enum gender{Empty, Female, Male}gender;
 typedef struct bathroom{
@@ -19,8 +19,15 @@ typedef struct bathroom{
 	gender state;
 	int currentPeopleCount;
 	int totalPeopleCount;
-	double startingTime;
-	double currentTime;
+	struct timeval startTime, currentTime;
+	double time;
+	//the necessary information for data collection
+	double longestWait;
+	double shortestWait;
+	double meanWait;
+	double longestBath;
+	double shortestBath;
+	double meanBath;
 }bathroom;
 
 void enter(gender g, bathroom b);

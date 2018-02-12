@@ -10,10 +10,17 @@
 
 void init(bathroom b){
 	b.currentPeopleCount = 0;
-	b.startingTime = clock();
-	b.currentTime = b.startingTime;
+	gettimeofday(&b.startTime, NULL);
+	b.currentTime;
 	b.state = Empty;
 	b.totalPeopleCount = 0;
+	b.time;
+	b.longestWait = 0;
+	b.shortestWait = -1;
+	b.meanWait = 0;
+	b.longestBath = 0;
+	b.shortestBath = -1;
+	b.meanBath = 0;
 	printf("I am making the spinLock\n");
 	if(pthread_spin_init(&b.lock, PTHREAD_PROCESS_SHARED)){
 		printf("Bathroom Lock Creation Failed, Exiting Now");
