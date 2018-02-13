@@ -50,9 +50,7 @@ void *thread(void *voidIn) {
 	struct timeval waitStartTime, waitFinTime, bathStartTime, bathFinTime;
 	double opTime;
 
-	double arrivalTime =
-			((sqrt(-2 * log(drand48())) * cos(2 * 3.14 * drand48()))
-					* stddevArrival) + meanArrival + b.currentTime;
+	double arrivalTime = ((sqrt(-2 * log(drand48())) * cos(2 * 3.14 * drand48())) * stddevArrival) + meanArrival + b.currentTime;
 	double bathroomTime;
 	init(b);
 	printf("First Pee Time: %f\n",arrivalTime);
@@ -131,32 +129,38 @@ void *thread(void *voidIn) {
 	return NULL;
 } //thread()
 
-void makeNewThread(int gender, double meanArrival, double meanStay, int loopCount, int number, pthread_t* threadID){
-	inputStruct* newThreadVals = (inputStruct*)malloc(sizeof(inputStruct));
-
-	newThreadVals->genIn = gender;
-	newThreadVals->arrivalIn = meanArrival;
-	newThreadVals->stayIn = meanStay;
-	newThreadVals->loopsIn = loopCount;
-	newThreadVals->threadNumber = number;
-
-	pthread_create(threadID, NULL, thread, newThreadVals);
-	free(newThreadVals);
-}
+//void makeNewThread(int gender, double meanArrival, double meanStay, int loopCount, int number, pthread_t* threadID){
+//	inputStruct* newThreadVals = (inputStruct*)malloc(sizeof(inputStruct));
+//
+//	newThreadVals->genIn = gender;
+//	newThreadVals->arrivalIn = meanArrival;
+//	newThreadVals->stayIn = meanStay;
+//	newThreadVals->loopsIn = loopCount;
+//	newThreadVals->threadNumber = number;
+//
+//	pthread_create(threadID, NULL, thread, newThreadVals);
+//	free(newThreadVals);
+//}
 
 int main(void){
 	int threadCount = 25;
-	pthread_t* threadIDs = (pthread_t*)calloc(sizeof(pthread_t), threadCount);
-
 	double meanArrival = 10;
 	double meanStay = 5;
+	pthread_t* threadIDs = (pthread_t*)calloc(sizeof(pthread_t), threadCount);
+	inputStruct* threadInfo = calloc(threadCount, sizeof(inputStruct));
 
 	for(int i = 0; i < threadCount; i++){
-		makeNewThread((i%2)+1, meanArrival, meanStay, 1000, i , &threadIDs[i]);
+		threadInfo[i].genIn = (rand()%1)+1; //has to return 1 or 2 in order to be male or female
+		threadInfo[i].arrivalIn = meanArrival;
+		threadInfo[i].stayIn = meanStay;
+		threadInfo[i].loopsIn = 1000;
+		threadInfo[i].threadNumber = i;
+
+		pthread_create(&threadIDs[i], NULL, thread, &threadInfo[i]);
+//		makeNewThread((i%2)+1, meanArrival, meanStay, 1000, i , &threadIDs[i]);
 	}
-
-	pthread_join(threadIDs[1], NULL);
-	pthread_join(threadIDs[0], NULL);
-
+	for(int i = 0; i < threadCount; i++){
+	pthread_join(threadIDs[i], NULL);
+	}
 	return 0;
 } //main
