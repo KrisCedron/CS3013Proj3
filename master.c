@@ -136,7 +136,9 @@ void *thread(void *voidIn) {
 	waitAvg = waitAvg /loopCount;
 	bathAvg = bathAvg /loopCount;
 	printf("Hey my name is %d and I don't need to go to the bathroom anymore!\n", number);
-	printf("Hey my name is %d and my longest wait time was %d, my shortest wait time was %d, and my average wait time was %d\nOn top of that, my longest time in the bathroom was %d, my shortest time in the bathroom was %d, and my average time in the bathroom was %d\n", number, waitMax, waitMin, waitAvg, bathMax, bathMin, bathAvg);
+	printf("Hey my name is %d and my longest wait time was %f, my shortest wait time was %f, and my average wait time was %f\n"
+			"On top of that, my longest time in the bathroom was %f, my shortest time in the bathroom was %f, and my average time in the bathroom was %f\n",
+			number, waitMax, waitMin, waitAvg, bathMax, bathMin, bathAvg);
 	return NULL;
 } //thread()
 
