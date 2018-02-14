@@ -34,9 +34,8 @@ void *thread(void *voidIn) {
 	double stddevArrival = meanArrival / 2;
 	double meanStay = structIn->stayIn; //the average time that people stay
 	double stddevStay = meanStay/2;
-	int loopCount = structIn->loopsIn;//the number of times the person is meant to go to the bathroom
+	int meanLoops = structIn->loopsIn;//the number of times the person is meant to go to the bathroom
 	int number = structIn->threadNumber;
-	int numLoops = loopCount;
 	int currState = NotPeeing;
 
 	//HERE IS ALSO WHERE THE PARAMETERS ARE TO BE ADDED FOR STATISICS
@@ -52,7 +51,8 @@ void *thread(void *voidIn) {
 
 	double bathroomTime;
 	double arrivalTime = ((sqrt(-2 * log(drand48())) * cos(2 * 3.14 * drand48())) * stddevArrival) + meanArrival + b.time;
-
+	int loopCount = ((sqrt(-2 * log(drand48())) * cos(2 * 3.14 * drand48())) * meanLoops/2) + meanLoops;
+	int numLoops = loopCount;
 
 	printf("Im %d And My First Pee Time: %f\n", number, arrivalTime);
 	printf("Im %d And My Loop Count Is: %d\n", number, loopCount);
@@ -60,7 +60,7 @@ void *thread(void *voidIn) {
 		if(currState == NotPeeing && arrivalTime <= b.time){
 			//printf("Hey my name is %d and I have to go to the bathroom!!\n", number);
 			gettimeofday(&waitStartTime, NULL);
-			enter(gender, b);
+			enter(gender, &b);
 			gettimeofday(&waitFinTime, NULL);
 			opTime = waitStartTime.tv_usec - waitFinTime.tv_usec;
 			waitAvg = waitAvg + opTime; //for computing the average wait time
@@ -89,7 +89,7 @@ void *thread(void *voidIn) {
 		}//if
 		else if(currState == Peeing && bathroomTime <= b.time){
 			gettimeofday(&bathStartTime, NULL);
-			leave(b);
+			leave(&b);
 			gettimeofday(&bathFinTime, NULL);
 			opTime = bathStartTime.tv_usec - bathFinTime.tv_usec;
 			waitAvg = bathAvg + opTime; //for computing the average wait time
@@ -134,7 +134,7 @@ void *thread(void *voidIn) {
 		b.linePeople = b.linePeople + b.lineCount;
 	}//while
 	printf("Hey my name is %d and I don't need to go to the bathroom anymore!\n", number);
-	printf("Hey my name is %d and my longest wait time was %d, my shortest wait time was %d, and my average wait time was %d\nOn top of that, my longest time in the bathroom was %d, my shortest time in the bathroom was %d, and my average time in the bathroom was %d");
+	//printf("Hey my name is %d and my longest wait time was %d, my shortest wait time was %d, and my average wait time was %d\nOn top of that, my longest time in the bathroom was %d, my shortest time in the bathroom was %d, and my average time in the bathroom was %d");
 	return NULL;
 } //thread()
 
@@ -143,11 +143,11 @@ void finalize(int totalTrips, int incrementer, int bathroomPeople, int linePeopl
 	printf("There were %d trips to the bathroom on this day\n", totalTrips);
 	double lineAverage = linePeople / incrementer;
 	double bathroomAverage = bathroomPeople / incrementer;
-	printf("The average number of people in the line at any given point was %d\nThe average number of people in the bathroom at any given point was %d\n", lineAverage, bathroomAverage);
+	printf("The average number of people in the line at any given point was %f\nThe average number of people in the bathroom at any given point was %f\n", lineAverage, bathroomAverage);
 	double populatedTime = endingTime - emptyTime;//since this is run after the code, the last value of b.time will be the total runtime
-	printf("The amount of time that the bathroom was populated was %d\nThe amount of time that the bathroom was empty was %d\n", populatedTime, emptyTime);
-	printf("The overall longest wait time was %d\nThe overall shortest wait time was %d\nThe overall mean wait time was %d", longestWait, shortestWait, meanWait);
-	printf("The overall longest time in the bathroom was %d\nThe overall shortest time in the bathroom was %d\nThe overall mean time in the bathroom was %d", longestBath, shortestBath, meanBath);
+	printf("The amount of time that the bathroom was populated was %f\nThe amount of time that the bathroom was empty was %f\n", populatedTime, emptyTime);
+	printf("The overall longest wait time was %f\nThe overall shortest wait time was %f\nThe overall mean wait time was %f", longestWait, shortestWait, meanWait);
+	printf("The overall longest time in the bathroom was %f\nThe overall shortest time in the bathroom was %f\nThe overall mean time in the bathroom was %f\n", longestBath, shortestBath, meanBath);
 }
 
 int main(int argc, char *argv[]){
@@ -160,11 +160,10 @@ int main(int argc, char *argv[]){
 	srand48((int)(time(NULL)));
 
 	//Init the bathroom, things that cant be done in init get done here as well
-	init(b);
+	init(&b);
 	gettimeofday(&b.startTime, NULL);
 	gettimeofday(&b.currentTime, NULL);
 	b.time = (b.currentTime.tv_sec - b.startTime.tv_sec) + ((b.currentTime.tv_usec - b.startTime.tv_usec)/1000000.0);
-	pthread_spin_unlock(&b.lock);
 	printf("Start Time: %f\n", b.time);
 
 	//bathroomSim nUsers meanLoopCount meanArrival meanStay

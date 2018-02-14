@@ -38,7 +38,7 @@ typedef struct bathroom{
 
 }bathroom;
 
-void enter(gender g, bathroom b);
+void enter(gender g, bathroom* b);
 void leave(bathroom b);
 void init(bathroom b);
 
