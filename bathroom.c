@@ -53,7 +53,7 @@ void enter(gender g, bathroom* b){
 	if(b->currentPeopleCount == 1){
 		b->state = g;
 		gettimeofday(&b->emptyEnd, NULL);
-		b->emptyTime = b->emptyTime + (b->emptyStart.tv_sec - b->emptyEnd.tv_sec);
+		b->emptyTime = b->emptyTime + (b->emptyEnd.tv_sec - b->emptyStart.tv_sec) + ((b->emptyEnd.tv_usec - b->emptyStart.tv_usec)/1000000.0);
 	}
 	assert(b->state == g);
 	pthread_spin_unlock(&b->lock);
