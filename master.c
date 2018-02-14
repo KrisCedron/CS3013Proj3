@@ -146,7 +146,7 @@ void *thread(void *voidIn) {
 
 
 void finalize(int totalTrips, int incrementer, int bathroomPeople, int linePeople, double endingTime, double emptyTime, double longestWait, double shortestWait, double meanWait, double longestBath, double shortestBath, double meanBath){
-	printf("There were %d trips to the bathroom on this day\n", totalTrips);
+	printf("\n----STATISTICS----\nThere were %d trips to the bathroom on this day\n", totalTrips);
 	double lineAverage = linePeople / incrementer;
 	double bathroomAverage = bathroomPeople / incrementer;
 	printf("The average number of people in the line at any given point was %f\nThe average number of people in the bathroom at any given point was %f\n", lineAverage, bathroomAverage);
