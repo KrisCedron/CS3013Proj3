@@ -134,7 +134,9 @@ void *thread(void *voidIn) {
 	}//while
 	//get the averages
 	waitAvg = waitAvg /loopCount;
+	b.meanWait = b.meanWait + waitAvg;
 	bathAvg = bathAvg /loopCount;
+	b.meanBath = b.meanBath + bathAvg;
 	printf("Hey my name is %d and I don't need to go to the bathroom anymore!\n", number);
 	printf("Hey my name is %d and my longest wait time was %f, my shortest wait time was %f, and my average wait time was %f\n"
 			"On top of that, my longest time in the bathroom was %f, my shortest time in the bathroom was %f, and my average time in the bathroom was %f\n",
