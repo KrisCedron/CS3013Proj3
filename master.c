@@ -34,7 +34,7 @@ void *thread(void *voidIn) {
 	double stddevArrival = meanArrival / 2;
 	double meanStay = structIn->stayIn; //the average time that people stay
 	double stddevStay = meanStay/2;
-	int loopCount = structIn->loopsIn;//the number of times the person is meant to go to the bathroom
+	int loopCount = ((sqrt(-2 * log(drand48())) * cos(2 * 3.14 * drand48())) * (structIn->loopsIn/2)) + structIn->loopsIn  + b.time;
 	int number = structIn->threadNumber;
 	int numLoops = loopCount;
 	int currState = NotPeeing;
@@ -50,12 +50,12 @@ void *thread(void *voidIn) {
 	struct timeval waitStartTime, waitFinTime, bathStartTime, bathFinTime;
 	double opTime;
 
-	double arrivalTime = ((sqrt(-2 * log(drand48())) * cos(2 * 3.14 * drand48())) * stddevArrival) + meanArrival + b.currentTime;
 	double bathroomTime;
-	init(b);
-	printf("First Pee Time: %f\n",arrivalTime);
+	double arrivalTime = ((sqrt(-2 * log(drand48())) * cos(2 * 3.14 * drand48())) * stddevArrival) + meanArrival + b.time;
+
+	printf("Im %d And My First Pee Time: %f\n", number, arrivalTime);
 	while(loopCount > 0){
-		if(currState == NotPeeing && arrivalTime <= b.currentTime){
+		if(currState == NotPeeing && arrivalTime <= b.time){
 			printf("Hey my name is %d and I have to go to the bathroom!!\n", number);
 			gettimeofday(&waitStartTime, NULL);
 			enter(gender, b);
@@ -82,11 +82,10 @@ void *thread(void *voidIn) {
 			}
 			currState = Peeing;
 			printf("Hey my name is %d and I'm in the bathroom!\n", number);
-			bathroomTime = ((sqrt(-2 * log(drand48())) * cos(2 * 3.14 * drand48())) * stddevStay) + meanStay  + b.currentTime;
+			bathroomTime = ((sqrt(-2 * log(drand48())) * cos(2 * 3.14 * drand48())) * stddevStay) + meanStay  + b.time;
 			printf("My name be %d and I'm gonna pee until %f\n", number, bathroomTime);
 		}//if
-		else if(currState == Peeing && bathroomTime <= b.currentTime){
-			printf("My name be %s and I'm gonna pee until %f\n", number, bathroomTime);
+		else if(currState == Peeing && bathroomTime <= b.time){
 			gettimeofday(&bathStartTime, NULL);
 			leave(b);
 			gettimeofday(&bathFinTime, NULL);
@@ -111,13 +110,13 @@ void *thread(void *voidIn) {
 				}
 			}
 			currState = NotPeeing;
-			arrivalTime = ((sqrt(-2 * log(drand48()))
-					* cos(2 * 3.14 * drand48())) * stddevArrival) + meanArrival
-							+ b.currentTime;
-			printf("My name be %d and I'm gonna need to pee again at %f\n",
-					number, arrivalTime);
+			arrivalTime = ((sqrt(-2 * log(drand48())) * cos(2 * 3.14 * drand48())) * stddevArrival) + meanArrival + b.time;
+			printf("My name be %d and I'm gonna need to pee again at %f\n", number, arrivalTime);
 			loopCount--;
 		}//else if
+		else if(currState == Peeing && bathroomTime > b.time){
+			printf("My name be %d and Oni-Chan is being a perv\n", number);
+		}
 		else{
 			printf("Im %d And I dont Need to Pee\n", number);
 		}
@@ -125,42 +124,46 @@ void *thread(void *voidIn) {
 		gettimeofday(&b.currentTime, NULL);
 		b.time = (b.currentTime.tv_usec - b.startTime.tv_usec);
 	}//while
-	printf("Hey my name is %d and I don't need to go to the bathroom anymore!", number);
+	printf("Hey my name is %d and I don't need to go to the bathroom anymore!\n", number);
 	return NULL;
 } //thread()
 
-//void makeNewThread(int gender, double meanArrival, double meanStay, int loopCount, int number, pthread_t* threadID){
-//	inputStruct* newThreadVals = (inputStruct*)malloc(sizeof(inputStruct));
-//
-//	newThreadVals->genIn = gender;
-//	newThreadVals->arrivalIn = meanArrival;
-//	newThreadVals->stayIn = meanStay;
-//	newThreadVals->loopsIn = loopCount;
-//	newThreadVals->threadNumber = number;
-//
-//	pthread_create(threadID, NULL, thread, newThreadVals);
-//	free(newThreadVals);
-//}
-
-int main(void){
-	int threadCount = 25;
+int main(int argc, char *argv[]){
+	int threadCount = 20000;
+	int meanLoop = 9000;
 	double meanArrival = 10;
 	double meanStay = 5;
 	pthread_t* threadIDs = (pthread_t*)calloc(sizeof(pthread_t), threadCount);
 	inputStruct* threadInfo = calloc(threadCount, sizeof(inputStruct));
 
+	init(b);
+	pthread_spin_unlock(&b.lock);
+
+	//bathroomSim nUsers meanLoopCount meanArrival meanStay
+	if(argc != 5){
+		printf("Invalid Parameter Count\nUsage: \'./bathroomSim nUsers meanLoopCount meanArrival meanStay\'\n");
+		exit(-1);
+	}
+	else{
+		threadCount = atoi(argv[1]);
+		meanLoop = atoi(argv[2]);
+		meanArrival = atof(argv[3]);
+		meanStay = atof(argv[4]);
+	}
+
+
 	for(int i = 0; i < threadCount; i++){
 		threadInfo[i].genIn = (rand()%1)+1; //has to return 1 or 2 in order to be male or female
 		threadInfo[i].arrivalIn = meanArrival;
 		threadInfo[i].stayIn = meanStay;
-		threadInfo[i].loopsIn = 1000;
+		threadInfo[i].loopsIn = meanLoop;
 		threadInfo[i].threadNumber = i;
 
 		pthread_create(&threadIDs[i], NULL, thread, &threadInfo[i]);
 //		makeNewThread((i%2)+1, meanArrival, meanStay, 1000, i , &threadIDs[i]);
 	}
 	for(int i = 0; i < threadCount; i++){
-	pthread_join(threadIDs[i], NULL);
+		pthread_join(threadIDs[i], NULL);
 	}
 	return 0;
 } //main

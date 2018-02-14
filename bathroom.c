@@ -26,7 +26,6 @@ void init(bathroom b){
 		printf("Bathroom Lock Creation Failed, Exiting Now");
 		exit(-1);
 	}
-	pthread_spin_unlock(&b.lock);
 	printf("I made the spin Lock\n");
 }
 
@@ -39,13 +38,13 @@ void enter(gender g, bathroom b){
 	if(b.currentPeopleCount == 1){
 		b.state = g;
 	}
+	assert(b.state == g);
 	pthread_spin_unlock(&b.lock);
 	printf("Have your lock back\n");
 }
 void leave(bathroom b){
 	pthread_spin_lock(&b.lock);
 	b.currentPeopleCount--;
-
 	if(b.currentPeopleCount == 0){
 		b.state = Empty;
 	}
