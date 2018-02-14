@@ -8,6 +8,7 @@
 
 #ifndef BATHROOM_H_
 #define BATHROOM_H_
+#define _GNU_SOURCE
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>

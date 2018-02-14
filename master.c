@@ -11,7 +11,6 @@
 
 #include <math.h>
 #include <unistd.h>
-#include <pthread.h>
 #include <sys/time.h>
 #include "bathroom.h"
 
@@ -120,15 +119,15 @@ void *thread(void *voidIn) {
 			//printf("My name be %d and Oni-Chan is being a perv\n", number);
 		}
 		else{
-			//printf("Im %d And I dont Need to Pee Until  %f\n", number, arrivalTime);
+				printf("Im %d And I dont Need to Pee Until  %f\n", number, arrivalTime);
 		}
 
 		//to keep the time updated, after anyone goes through an operation, we check the time.
 		usleep(1000);
 		gettimeofday(&b.currentTime, NULL);
 		b.time = (b.currentTime.tv_sec - b.startTime.tv_sec) + ((b.currentTime.tv_usec - b.startTime.tv_usec)/1000000.0);
-		//printf("Current Time: %f -------------------\n", b.time);
-		//printf("Im %d and I have %d Loops Remaining\n", number, loopCount);
+		printf("Current Time: %f -------------------\n", b.time);
+		printf("Im %d and I have %d Loops Remaining\nNext action is at: %f\n", number, loopCount, (currState==Peeing ? bathroomTime : arrivalTime));
 		b.incrementer++;//increment the tracker; every loop this increments as well as the other bathroom/line stuff for the sake of finding the average
 		b.bathroomPeople = b.bathroomPeople + b.currentPeopleCount;//match the incrementer with this
 		b.linePeople = b.linePeople + b.lineCount;
@@ -139,7 +138,9 @@ void *thread(void *voidIn) {
 	bathAvg = bathAvg / numLoops;
 	b.meanBath = b.meanBath + bathAvg;
 	printf("Hey my name is %d and I don't need to go to the bathroom anymore!\n", number);
-	printf("Hey my name is %d and my longest wait time was %d, my shortest wait time was %d, and my average wait time was %d\nOn top of that, my longest time in the bathroom was %d, my shortest time in the bathroom was %d, and my average time in the bathroom was %d\n", number, waitMax, waitMin, waitAvg, bathMax, bathMin, bathAvg);
+	printf("Hey my name is %d and my longest wait time was %f, my shortest wait time was %f, and my average wait time was %f\n"
+			"On top of that, my longest time in the bathroom was %f, my shortest time in the bathroom was %f, and my average time in the bathroom was %f\n",
+			number, waitMax, waitMin, waitAvg, bathMax, bathMin, bathAvg);
 	return NULL;
 } //thread()
 

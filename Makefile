@@ -1,7 +1,7 @@
 all: master
 
 bathroom.o: bathroom.c bathroom.h
-	gcc -c -g -pthread bathroom.c
+	gcc -c -g bathroom.c -pthread
 	
 master: master.c bathroom.o
 	gcc -Wall -g  master.c bathroom.o -pthread -lm -o bathroomSim
