@@ -62,7 +62,7 @@ void *thread(void *voidIn) {
 			gettimeofday(&waitStartTime, NULL);
 			enter(gender, &b);
 			gettimeofday(&waitFinTime, NULL);
-			opTime = waitStartTime.tv_usec - waitFinTime.tv_usec;
+			opTime = (waitFinTime.tv_sec - waitStartTime.tv_sec) + ((waitFinTime.tv_usec - waitStartTime.tv_usec)/1000000.0);
 			waitAvg = waitAvg + opTime; //for computing the average wait time
 			if (loopCount == numLoops) { //if this is the person's first time going to the bathroom for the sake of calculating min
 				waitMin = opTime;
@@ -91,7 +91,7 @@ void *thread(void *voidIn) {
 			gettimeofday(&bathStartTime, NULL);
 			leave(&b);
 			gettimeofday(&bathFinTime, NULL);
-			opTime = bathStartTime.tv_usec - bathFinTime.tv_usec;
+			opTime = (bathFinTime.tv_sec - bathStartTime.tv_sec) + ((bathFinTime.tv_usec - bathStartTime.tv_usec)/1000000.0);
 			waitAvg = bathAvg + opTime; //for computing the average wait time
 			if (loopCount == numLoops) { //if this is the person's first time going to the bathroom for the sake of calculating min
 				bathMin = opTime;
