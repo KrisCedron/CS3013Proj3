@@ -90,6 +90,8 @@ void *thread(void *voidIn) {
 			gettimeofday(&bathStartTime, NULL);
 			leave(b);
 			gettimeofday(&bathFinTime, NULL);
+			b.bathroomTrips++;//increment the total people going to the bathroom
+
 			opTime = bathStartTime.tv_usec - bathFinTime.tv_usec;
 			waitAvg = bathAvg + opTime; //for computing the average wait time
 			if (loopCount == numLoops) { //if this is the person's first time going to the bathroom for the sake of calculating min
@@ -124,8 +126,12 @@ void *thread(void *voidIn) {
 		//to keep the time updated, after anyone goes through an operation, we check the time.
 		gettimeofday(&b.currentTime, NULL);
 		b.time = (b.currentTime.tv_usec - b.startTime.tv_usec);
+		b.incrementer++;//increment the tracker; every loop this increments as well as the other bathroom/line stuff for the sake of finding the average
+		b.bathroomPeople = b.bathroomPeople + b.currentPeopleCount;//match the incrementer with this
+		b.linePeople = b.linePeople + b.lineCount;
 	}//while
 	printf("Hey my name is %d and I don't need to go to the bathroom anymore!", number);
+	printf("Hey my name is %d and my longest wait time was %d, my shortest wait time was %d, and my average wait time was %d\nOn top of that, my longest time in the bathroom was %d, my shortest time in the bathroom was %d, and my average time in the bathroom was %d");
 	return NULL;
 } //thread()
 
@@ -141,6 +147,18 @@ void *thread(void *voidIn) {
 //	pthread_create(threadID, NULL, thread, newThreadVals);
 //	free(newThreadVals);
 //}
+
+
+void finalize(int totalTrips, int incrementer, int bathroomPeople, int linePeople, double endingTime, double emptyTime, double longestWait, double shortestWait, double meanWait, double longestBath, double shortestBath, double meanBath){
+	printf("There were %d trips to the bathroom on this day\n", totalTrips);
+	double lineAverage = linePeople / incrementer;
+	double bathroomAverage = bathroomPeople / incrementer;
+	printf("The average number of people in the line at any given point was %d\nThe average number of people in the bathroom at any given point was %d\n", lineAverage, bathroomAverage);
+	double populatedTime = endingTime - emptyTime;//since this is run after the code, the last value of b.time will be the total runtime
+	printf("The amount of time that the bathroom was populated was %d\nThe amount of time that the bathroom was empty was %d\n", populatedTime, emptyTime);
+	printf("The overall longest wait time was %d\nThe overall shortest wait time was %d\nThe overall mean wait time was %d", longestWait, shortestWait, meanWait);
+	printf("The overall longest time in the bathroom was %d\nThe overall shortest time in the bathroom was %d\nThe overall mean time in the bathroom was %d", longestBath, shortestBath, meanBath);
+}
 
 int main(void){
 	int threadCount = 25;
@@ -162,5 +180,6 @@ int main(void){
 	for(int i = 0; i < threadCount; i++){
 	pthread_join(threadIDs[i], NULL);
 	}
+	finalize(b.bathroomTrips, b.incrementer, b.bathroomPeople, b.linePeople, b.time, b.emptyTime, b.longestWait, b.shortestWait, b.meanWait, b.longestBath, b.shortestBath, b.meanBath);//run the finalize function
 	return 0;
 } //main

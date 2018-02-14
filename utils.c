@@ -2,7 +2,7 @@
  * utils.c
  *
  *  Created on: Feb 7, 2018
- *      Author: ccedron
+ *      Author: ccedron and mrmcfatter
  */
 #include "utils.h"
 #include <math.h>

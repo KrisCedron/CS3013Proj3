@@ -2,7 +2,7 @@
  * bathroom.h
  *
  *  Created on: Feb 7, 2018
- *      Author: ccedron
+ *      Author: ccedron and mrmcfatter
  */
 
 
@@ -19,8 +19,10 @@ typedef struct bathroom{
 	gender state;
 	int currentPeopleCount;
 	int totalPeopleCount;
-	struct timeval startTime, currentTime;
+	int lineCount;
+	struct timeval startTime, currentTime, emptyStart, emptyEnd;
 	double time;
+	double emptyTime;
 	//the necessary information for data collection
 	double longestWait;
 	double shortestWait;
@@ -28,6 +30,11 @@ typedef struct bathroom{
 	double longestBath;
 	double shortestBath;
 	double meanBath;
+	int bathroomTrips;
+	int incrementer;
+	int linePeople;
+	int bathroomPeople;
+
 }bathroom;
 
 void enter(gender g, bathroom b);
