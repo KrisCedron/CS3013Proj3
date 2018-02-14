@@ -92,7 +92,7 @@ void *thread(void *voidIn) {
 			leave(&b);
 			gettimeofday(&bathFinTime, NULL);
 			opTime = (bathFinTime.tv_sec - bathStartTime.tv_sec) + ((bathFinTime.tv_usec - bathStartTime.tv_usec)/1000000.0);
-			waitAvg = bathAvg + opTime; //for computing the average wait time
+			waitAvg = waitAvg + opTime; //for computing the average wait time
 			if (loopCount == numLoops) { //if this is the person's first time going to the bathroom for the sake of calculating min
 				bathMin = opTime;
 				if (b.shortestBath < 0) { //since we initialize the shortest wait as -1, this is the "first input" case
@@ -134,9 +134,9 @@ void *thread(void *voidIn) {
 		b.linePeople = b.linePeople + b.lineCount;
 	}//while
 	//get the averages
-	waitAvg = waitAvg /loopCount;
+	waitAvg = waitAvg / numLoops;
 	b.meanWait = b.meanWait + waitAvg;
-	bathAvg = bathAvg /loopCount;
+	bathAvg = bathAvg / numLoops;
 	b.meanBath = b.meanBath + bathAvg;
 	printf("Hey my name is %d and I don't need to go to the bathroom anymore!\n", number);
 	printf("Hey my name is %d and my longest wait time was %d, my shortest wait time was %d, and my average wait time was %d\nOn top of that, my longest time in the bathroom was %d, my shortest time in the bathroom was %d, and my average time in the bathroom was %d\n", number, waitMax, waitMin, waitAvg, bathMax, bathMin, bathAvg);
@@ -151,7 +151,7 @@ void finalize(int totalTrips, int incrementer, int bathroomPeople, int linePeopl
 	printf("The average number of people in the line at any given point was %f\nThe average number of people in the bathroom at any given point was %f\n", lineAverage, bathroomAverage);
 	double populatedTime = endingTime - emptyTime;//since this is run after the code, the last value of b.time will be the total runtime
 	printf("The amount of time that the bathroom was populated was %f\nThe amount of time that the bathroom was empty was %f\n", populatedTime, emptyTime);
-	printf("The overall longest wait time was %f\nThe overall shortest wait time was %f\nThe overall mean wait time was %f", longestWait, shortestWait, meanWait);
+	printf("The overall longest wait time was %f\nThe overall shortest wait time was %f\nThe overall mean wait time was %f\n", longestWait, shortestWait, meanWait);
 	printf("The overall longest time in the bathroom was %f\nThe overall shortest time in the bathroom was %f\nThe overall mean time in the bathroom was %f\n", longestBath, shortestBath, meanBath);
 }
 
