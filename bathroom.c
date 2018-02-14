@@ -39,12 +39,13 @@ void init(bathroom b){
 
 void enter(gender g, bathroom b){
 	while(b.state != g && b.state != Empty){pthread_yield();}
-	printf("Please may i have a lock\n");
+	//printf("Please may i have a lock\n");
 	b.lineCount++;
 	pthread_spin_lock(&b.lock);
 	b.lineCount--;
-	printf("yes you may\n");
+	//printf("yes you may\n");
 	b.currentPeopleCount++;
+	printf("Current People Count: %d\n", b.currentPeopleCount);
 	if(b.currentPeopleCount == 1){
 		b.state = g;
 		gettimeofday(&b.emptyEnd, NULL);
@@ -52,7 +53,7 @@ void enter(gender g, bathroom b){
 	}
 	assert(b.state == g);
 	pthread_spin_unlock(&b.lock);
-	printf("Have your lock back\n");
+	//printf("Have your lock back\n");
 }
 void leave(bathroom b){
 	pthread_spin_lock(&b.lock);

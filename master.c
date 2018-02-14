@@ -53,10 +53,12 @@ void *thread(void *voidIn) {
 	double bathroomTime;
 	double arrivalTime = ((sqrt(-2 * log(drand48())) * cos(2 * 3.14 * drand48())) * stddevArrival) + meanArrival + b.time;
 
+
 	printf("Im %d And My First Pee Time: %f\n", number, arrivalTime);
+	printf("Im %d And My Loop Count Is: %d\n", number, loopCount);
 	while(loopCount > 0){
 		if(currState == NotPeeing && arrivalTime <= b.time){
-			printf("Hey my name is %d and I have to go to the bathroom!!\n", number);
+			//printf("Hey my name is %d and I have to go to the bathroom!!\n", number);
 			gettimeofday(&waitStartTime, NULL);
 			enter(gender, b);
 			gettimeofday(&waitFinTime, NULL);
@@ -81,9 +83,9 @@ void *thread(void *voidIn) {
 				}
 			}
 			currState = Peeing;
-			printf("Hey my name is %d and I'm in the bathroom!\n", number);
+			//printf("Hey my name is %d and I'm in the bathroom!\n", number);
 			bathroomTime = ((sqrt(-2 * log(drand48())) * cos(2 * 3.14 * drand48())) * stddevStay) + meanStay  + b.time;
-			printf("My name be %d and I'm gonna pee until %f\n", number, bathroomTime);
+			//printf("My name be %d and I'm gonna pee until %f\n", number, bathroomTime);
 		}//if
 		else if(currState == Peeing && bathroomTime <= b.time){
 			gettimeofday(&bathStartTime, NULL);
@@ -111,18 +113,22 @@ void *thread(void *voidIn) {
 			}
 			currState = NotPeeing;
 			arrivalTime = ((sqrt(-2 * log(drand48())) * cos(2 * 3.14 * drand48())) * stddevArrival) + meanArrival + b.time;
-			printf("My name be %d and I'm gonna need to pee again at %f\n", number, arrivalTime);
 			loopCount--;
+			//printf("My name be %d and I'm gonna need to pee again at %f\n", number, arrivalTime);
 		}//else if
 		else if(currState == Peeing && bathroomTime > b.time){
-			printf("My name be %d and Oni-Chan is being a perv\n", number);
+			//printf("My name be %d and Oni-Chan is being a perv\n", number);
 		}
 		else{
-			printf("Im %d And I dont Need to Pee\n", number);
+			//printf("Im %d And I dont Need to Pee Until  %f\n", number, arrivalTime);
 		}
+
 		//to keep the time updated, after anyone goes through an operation, we check the time.
+		usleep(1000);
 		gettimeofday(&b.currentTime, NULL);
-		b.time = (b.currentTime.tv_usec - b.startTime.tv_usec);
+		b.time = (b.currentTime.tv_sec - b.startTime.tv_sec) + ((b.currentTime.tv_usec - b.startTime.tv_usec)/1000000.0);
+		//printf("Current Time: %f -------------------\n", b.time);
+		//printf("Im %d and I have %d Loops Remaining\n", number, loopCount);
 		b.incrementer++;//increment the tracker; every loop this increments as well as the other bathroom/line stuff for the sake of finding the average
 		b.bathroomPeople = b.bathroomPeople + b.currentPeopleCount;//match the incrementer with this
 		b.linePeople = b.linePeople + b.lineCount;
@@ -151,9 +157,15 @@ int main(int argc, char *argv[]){
 	double meanStay = 5;
 	pthread_t* threadIDs = (pthread_t*)calloc(sizeof(pthread_t), threadCount);
 	inputStruct* threadInfo = calloc(threadCount, sizeof(inputStruct));
+	srand48((int)(time(NULL)));
 
+	//Init the bathroom, things that cant be done in init get done here as well
 	init(b);
+	gettimeofday(&b.startTime, NULL);
+	gettimeofday(&b.currentTime, NULL);
+	b.time = (b.currentTime.tv_sec - b.startTime.tv_sec) + ((b.currentTime.tv_usec - b.startTime.tv_usec)/1000000.0);
 	pthread_spin_unlock(&b.lock);
+	printf("Start Time: %f\n", b.time);
 
 	//bathroomSim nUsers meanLoopCount meanArrival meanStay
 	if(argc != 5){
