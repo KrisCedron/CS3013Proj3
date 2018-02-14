@@ -34,7 +34,6 @@ void init(bathroom b){
 		printf("Bathroom Lock Creation Failed, Exiting Now");
 		exit(-1);
 	}
-	pthread_spin_unlock(&b.lock);
 	printf("I made the spin Lock\n");
 }
 
@@ -51,13 +50,13 @@ void enter(gender g, bathroom b){
 		gettimeofday(&b.emptyEnd, NULL);
 		b.emptyTime = b.emptyTime + (b.emptyStart.tv_sec - b.emptyEnd.tv_sec);
 	}
+	assert(b.state == g);
 	pthread_spin_unlock(&b.lock);
 	printf("Have your lock back\n");
 }
 void leave(bathroom b){
 	pthread_spin_lock(&b.lock);
 	b.currentPeopleCount--;
-
 	if(b.currentPeopleCount == 0){
 		b.state = Empty;
 		gettimeofday(&b.emptyStart, NULL);
