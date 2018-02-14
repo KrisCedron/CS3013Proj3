@@ -119,15 +119,15 @@ void *thread(void *voidIn) {
 			//printf("My name be %d and Oni-Chan is being a perv\n", number);
 		}
 		else{
-			//printf("Im %d And I dont Need to Pee Until  %f\n", number, arrivalTime);
+				printf("Im %d And I dont Need to Pee Until  %f\n", number, arrivalTime);
 		}
 
 		//to keep the time updated, after anyone goes through an operation, we check the time.
 		usleep(1000);
 		gettimeofday(&b.currentTime, NULL);
 		b.time = (b.currentTime.tv_sec - b.startTime.tv_sec) + ((b.currentTime.tv_usec - b.startTime.tv_usec)/1000000.0);
-		//printf("Current Time: %f -------------------\n", b.time);
-		//printf("Im %d and I have %d Loops Remaining\n", number, loopCount);
+		printf("Current Time: %f -------------------\n", b.time);
+		printf("Im %d and I have %d Loops Remaining\nNext action is at: %f\n", number, loopCount, (currState==Peeing ? bathroomTime : arrivalTime));
 		b.incrementer++;//increment the tracker; every loop this increments as well as the other bathroom/line stuff for the sake of finding the average
 		b.bathroomPeople = b.bathroomPeople + b.currentPeopleCount;//match the incrementer with this
 		b.linePeople = b.linePeople + b.lineCount;
