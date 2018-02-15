@@ -1,0 +1,76 @@
+-----------------------------COMMAND------------------------------------------------
+./bathroomSim 12 10 .25 1
+---------------------------------OUTPUT-----------------------------------------------
+Im 0 And My First Pee Time: -0.036139
+Im 5 And My First Pee Time: 0.156335
+Im 3 And My First Pee Time: 0.275046
+Im 5 And My Loop Count Is: 3
+Im 1 And My First Pee Time: 0.370154
+Im 3 And My Loop Count Is: 5
+Im 6 And My First Pee Time: 0.088978
+Im 6 And My Loop Count Is: 10
+Im 1 And My Loop Count Is: 12
+Im 0 And My Loop Count Is: 18
+Im 4 And My First Pee Time: 0.481072
+Im 2 And My First Pee Time: 0.519870
+Im 2 And My Loop Count Is: 6
+Im 4 And My Loop Count Is: 15
+Im 7 And My First Pee Time: 0.253502
+Im 7 And My Loop Count Is: 12
+Im 8 And My First Pee Time: 0.343231
+Im 8 And My Loop Count Is: 10
+Im 9 And My First Pee Time: 0.374163
+Im 9 And My Loop Count Is: 8
+Im 10 And My First Pee Time: 0.240929
+Im 10 And My Loop Count Is: 7
+Im 11 And My First Pee Time: 0.380213
+Im 11 And My Loop Count Is: 14
+Hey my name is 5 and I don't need to go to the bathroom anymore!
+My longest wait time was 0.000000, my shortest wait time was 0.000000, and my average wait time was 0.000000
+On top of that, my longest time in the bathroom was 0.000000, my shortest time in the bathroom was 0.000000, and my average time in the bathroom was 0.000000
+Hey my name is 3 and I don't need to go to the bathroom anymore!
+My longest wait time was 0.000001, my shortest wait time was 0.000000, and my average wait time was 0.000000
+On top of that, my longest time in the bathroom was 0.000000, my shortest time in the bathroom was 0.000000, and my average time in the bathroom was 0.000000
+Hey my name is 2 and I don't need to go to the bathroom anymore!
+My longest wait time was 0.000001, my shortest wait time was 0.000000, and my average wait time was 0.000000
+On top of that, my longest time in the bathroom was 0.000000, my shortest time in the bathroom was 0.000000, and my average time in the bathroom was 0.000000
+Hey my name is 10 and I don't need to go to the bathroom anymore!
+My longest wait time was 0.000001, my shortest wait time was 0.000000, and my average wait time was 0.000000
+On top of that, my longest time in the bathroom was 0.000001, my shortest time in the bathroom was 0.000000, and my average time in the bathroom was 0.000000
+Hey my name is 9 and I don't need to go to the bathroom anymore!
+My longest wait time was 0.000001, my shortest wait time was 0.000000, and my average wait time was 0.000003
+On top of that, my longest time in the bathroom was 0.000024, my shortest time in the bathroom was 0.000000, and my average time in the bathroom was 0.000000
+Hey my name is 8 and I don't need to go to the bathroom anymore!
+My longest wait time was 0.000001, my shortest wait time was 0.000000, and my average wait time was 0.000001
+On top of that, my longest time in the bathroom was 0.000001, my shortest time in the bathroom was 0.000000, and my average time in the bathroom was 0.000000
+Hey my name is 11 and I don't need to go to the bathroom anymore!
+My longest wait time was 0.000001, my shortest wait time was 0.000000, and my average wait time was 0.000000
+On top of that, my longest time in the bathroom was 0.000001, my shortest time in the bathroom was 0.000000, and my average time in the bathroom was 0.000000
+Hey my name is 7 and I don't need to go to the bathroom anymore!
+My longest wait time was 0.000001, my shortest wait time was 0.000000, and my average wait time was 0.000000
+On top of that, my longest time in the bathroom was 0.000001, my shortest time in the bathroom was 0.000000, and my average time in the bathroom was 0.000000
+Hey my name is 4 and I don't need to go to the bathroom anymore!
+My longest wait time was 0.000022, my shortest wait time was 0.000000, and my average wait time was 0.000002
+On top of that, my longest time in the bathroom was 0.000001, my shortest time in the bathroom was 0.000000, and my average time in the bathroom was 0.000000
+Hey my name is 6 and I don't need to go to the bathroom anymore!
+My longest wait time was 0.000001, my shortest wait time was 0.000000, and my average wait time was 0.000001
+On top of that, my longest time in the bathroom was 0.000001, my shortest time in the bathroom was 0.000000, and my average time in the bathroom was 0.000000
+Hey my name is 1 and I don't need to go to the bathroom anymore!
+My longest wait time was 0.000001, my shortest wait time was 0.000000, and my average wait time was 0.000000
+On top of that, my longest time in the bathroom was 0.000001, my shortest time in the bathroom was 0.000000, and my average time in the bathroom was 0.000000
+Hey my name is 0 and I don't need to go to the bathroom anymore!
+My longest wait time was 0.000001, my shortest wait time was 0.000000, and my average wait time was 0.000001
+On top of that, my longest time in the bathroom was 0.000001, my shortest time in the bathroom was 0.000000, and my average time in the bathroom was 0.000000
+
+----STATISTICS----
+There were 120 trips to the bathroom on this day
+The average number of people in the line at any given point was 0.000000
+The average number of people in the bathroom at any given point was 1.000000
+The amount of time that the bathroom was populated was 3954.625375
+The amount of time that the bathroom was empty was 15.799335
+The overall longest wait time was 0.000022
+The overall shortest wait time was 0.000000
+The overall mean wait time was 0.000009
+The overall longest time in the bathroom was 0.000024
+The overall shortest time in the bathroom was 0.000000
+The overall mean time in the bathroom was 0.000000
