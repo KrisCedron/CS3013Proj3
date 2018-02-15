@@ -29,27 +29,27 @@ void init(bathroom* b){
 	b->linePeople = 0;
 	b->bathroomPeople = 0;
 	b->lineCount = 0;
-	printf("I am making the spinLock\n");
+	//printf("I am making the spinLock\n");
 	if(pthread_spin_init(&b->lock, PTHREAD_PROCESS_SHARED)){
 		printf("Bathroom Lock Creation Failed, Exiting Now");
 		exit(-1);
 	}
-	printf("I made the spin Lock\n");
+	//printf("I made the spin Lock\n");
 }
 
 void enter(gender g, bathroom* b){
 	while(b->state != g && b->state != Empty){
-		printf("I can't Enter the Bathrrom, my Gender is %d and the bathroom is occupied by: %d\n", g, b->state);
+		//printf("I can't Enter the Bathrrom, my Gender is %d and the bathroom is occupied by: %d\n", g, b->state);
 		pthread_yield();
 	}
-	printf("Please may i have a lock\n");
+	//printf("Please may i have a lock\n");
 	b->lineCount++;
 	pthread_spin_lock(&b->lock);
 	b->lineCount--;
 	b->bathroomTrips++;
-	printf("yes you may\n");
+	//printf("yes you may\n");
 	b->currentPeopleCount++;
-	printf("Current People Count: %d\n", b->currentPeopleCount);
+	//printf("Current People Count: %d\n", b->currentPeopleCount);
 	if(b->currentPeopleCount == 1){
 		b->state = g;
 		gettimeofday(&b->emptyEnd, NULL);
@@ -57,7 +57,7 @@ void enter(gender g, bathroom* b){
 	}
 	assert(b->state == g);
 	pthread_spin_unlock(&b->lock);
-	printf("IM IN BITECHES\n");
+	//printf("IM IN BITECHES\n");
 }
 void leave(bathroom* b){
 	pthread_spin_lock(&b->lock);
@@ -67,5 +67,5 @@ void leave(bathroom* b){
 		gettimeofday(&b->emptyStart, NULL);
 	}
 	pthread_spin_unlock(&b->lock);
-	printf("IM OUT BITECHES\n");
+	//printf("IM OUT BITECHES\n");
 }

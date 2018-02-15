@@ -1,0 +1,21 @@
+-----------------------------COMMAND------------------------------------------------
+./bathroomSim 1 10 .25 1
+---------------------------------OUTPUT-----------------------------------------------
+Im 0 And My First Pee Time: 0.172850
+Im 0 And My Loop Count Is: 16
+Hey my name is 0 and I don't need to go to the bathroom anymore!
+My longest wait time was 0.000024, my shortest wait time was 0.000000, and my average wait time was 0.000002
+On top of that, my longest time in the bathroom was 0.000001, my shortest time in the bathroom was 0.000000, and my average time in the bathroom was 0.000000
+
+----STATISTICS----
+There were 16 trips to the bathroom on this day
+The average number of people in the line at any given point was 0.000000
+The average number of people in the bathroom at any given point was 0.000000
+The amount of time that the bathroom was populated was 15.703630
+The amount of time that the bathroom was empty was 8.827835
+The overall longest wait time was 0.000024
+The overall shortest wait time was 0.000000
+The overall mean wait time was 0.000002
+The overall longest time in the bathroom was 0.000001
+The overall shortest time in the bathroom was 0.000000
+The overall mean time in the bathroom was 0.000000
